@@ -9,6 +9,8 @@
 #include <math.h>
 #include <sys/stat.h>
 #include <lod.h>
+#include <iostream>
+#include <cstring>
 
 using namespace std;
 #define  maxInstances 500,
@@ -75,20 +77,20 @@ int main(int argc, char *argv[]){
 
     if ( argc < 5 ){
         if (argc == 2 && string(argv[1])=="-h"){
-            cout<<"usage: ."<< argv[0] <<" -i <inputFile> -o <outputPath> [OPTIONS]\n";
-            cout<<"usage: and <outputPath> must exist before execution of the program\n\n";
-            cout << "OPTIONS (choose one among these):\n";
-            cout <<"\t<N> ...  : Describe discrete LOD : Where 0.0 < N < 1.0 decimate input mesh down to N%.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> 0.1 0.02 0.5 \n ";
-            cout <<"\t-e <nbLOD>  : Generate LOD with exponential function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -e 5 \n ";
-            cout <<"\t-q <nbLOD>  : Generate LOD with quadratic function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -q 3 \n ";
+            std::cout<<"usage: ."<< argv[0] <<" -i <inputFile> -o <outputPath> [OPTIONS]\n";
+            std::cout<<"usage: and <outputPath> must exist before execution of the program\n\n";
+            std::cout << "OPTIONS (choose one among these):\n";
+            std::cout <<"\t<N> ...  : Describe discrete LOD : Where 0.0 < N < 1.0 decimate input mesh down to N%.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> 0.1 0.02 0.5 \n ";
+            std::cout <<"\t-e <nbLOD>  : Generate LOD with exponential function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -e 5 \n ";
+            std::cout <<"\t-q <nbLOD>  : Generate LOD with quadratic function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -q 3 \n ";
         }else{
-            cout << "BAD ARGUMENTS"<<endl;
-            cout<<"usage: ."<< argv[0] <<" -i <inputFile> -o <outputPath> [OPTIONS]\n";
-            cout<<"usage: and <outputPath> must exist before execution of the program\n\n";
-            cout << "OPTIONS (choose one among these):\n";
-            cout <<"\t<N> ...  : Describe discrete LOD : Where 0.0 < N < 1.0 decimate input mesh down to N%.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> 0.1 0.02 0.5 \n ";
-            cout <<"\t-e <nbLOD>  : Generate LOD with exponential function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -e 5 \n ";
-            cout <<"\t-q <nbLOD>  : Generate LOD with quadratic function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -q 3 \n ";
+            std::cout << "BAD ARGUMENTS"<<endl;
+            std::cout<<"usage: ."<< argv[0] <<" -i <inputFile> -o <outputPath> [OPTIONS]\n";
+            std::cout<<"usage: and <outputPath> must exist before execution of the program\n\n";
+            std::cout << "OPTIONS (choose one among these):\n";
+            std::cout <<"\t<N> ...  : Describe discrete LOD : Where 0.0 < N < 1.0 decimate input mesh down to N%.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> 0.1 0.02 0.5 \n ";
+            std::cout <<"\t-e <nbLOD>  : Generate LOD with exponential function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -e 5 \n ";
+            std::cout <<"\t-q <nbLOD>  : Generate LOD with quadratic function : Where <nbLOD> > 1.\n\t\tExample : ."<< argv[0] <<" -i <inputFile> -o <outputPath> -q 3 \n ";
         }
     }else{
         std::string filename ;
@@ -125,7 +127,7 @@ int main(int argc, char *argv[]){
         }
         struct stat buf;
         if( stat(filename.c_str(), &buf) != 0)
-            cout<<"File "+filename+" does'nt exist.\n";
+            std::cout<<"File "+filename+" does'nt exist.\n";
         else{
 
             MyMesh mesh=loadMesh(filename);
@@ -141,7 +143,7 @@ int main(int argc, char *argv[]){
                          * use quadratric function
                          * 1-t^2
                          */
-                        cout <<"use quadratic function" <<endl;
+                        std::cout <<"use quadratic function" <<endl;
                         e=1-pow(float(i)/(nbLevel+1),2);
                     }else{
                         /**
@@ -149,7 +151,7 @@ int main(int argc, char *argv[]){
                          * exp(-t^2)
                          */
 
-                        cout <<"use exponential function" <<endl;
+                        std::cout <<"use exponential function" <<endl;
                         /* we decide  limit->oo exp(-t^2)=0 start value is i=2 */
                         float limit = 2.0;
                         e=exp(-pow(float(i)*limit/(nbLevel+1),2)); /*2 is */
@@ -158,7 +160,7 @@ int main(int argc, char *argv[]){
                     percents.push_back(e);
                 }
                 for(vector<float>::iterator i = percents.begin(); i != percents.end();++i){
-                        cout <<"% "<<*i <<endl;
+                        std::cout <<"% "<<*i <<endl;
                         myLODs.push_back(new LOD(mesh,filename,outputPath,*i));
                 }
             }else{
